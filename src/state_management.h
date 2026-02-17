@@ -17,5 +17,7 @@ void get_state_str(const struct GameState *, char *, size_t);
 void give_candy(struct GameState *, struct GameEvents *);
 /* Restore some HP with a pill (user event) */
 void give_pill(struct GameState *, struct GameEvents *);
+/* Gain XP by training (user event) */
+void give_train(struct GameState *, struct GameEvents *);
 
 #endif

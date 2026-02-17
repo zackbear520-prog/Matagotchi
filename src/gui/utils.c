@@ -34,3 +34,7 @@ void go_to_candy_animation(struct ApplicationContext *context) {
 void go_to_pill_animation(struct ApplicationContext *context) {
     scene_manager_next_scene(context->scene_manager, scene_pill);
 }
+
+void go_to_train_animation(struct ApplicationContext *context) {
+    scene_manager_next_scene(context->scene_manager, scene_train);
+}

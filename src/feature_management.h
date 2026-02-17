@@ -63,4 +63,9 @@ void generate_hu(struct GameState *, uint32_t, struct GameEvents *);
  * the @game_events struct where to put the hp that are restored. */
 void generate_hp(struct GameState *, uint32_t, struct GameEvents *);
 
+/* generate_xp is used to train and gain experience.
+ * Takes in input the @game_state, the @current_timestamp and
+ * the @game_events struct where to put the xp that are gained. */
+void generate_xp(struct GameState *, uint32_t, struct GameEvents *);
+
 #endif

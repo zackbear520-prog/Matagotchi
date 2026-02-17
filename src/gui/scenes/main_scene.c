@@ -13,13 +13,13 @@ enum ButtonIndex {
     settings_button,
     info_button,
     candy_button,
-    pill_button
+    pill_button,
+    train_button
 };
 
 static void main_button_pressed_callback(void *ctx, uint32_t index) {
     struct ApplicationContext *context = (struct ApplicationContext *)ctx;
     FURI_LOG_T(LOG_TAG, "main_button_pressed_callback with index %lu", index);
-    // Handle it in the *_on_event function
     view_dispatcher_send_custom_event(context->view_dispatcher, index);
 }
 
@@ -28,46 +28,51 @@ static void scene_main_refresh_view(ButtonPanel *button_panel, struct Applicatio
     button_panel_get_selection(button_panel, &x, &y);
     button_panel_reset(button_panel);
 
-    // Setting up the layout of the view
-    button_panel_reserve(button_panel,
-                         2, // Number of columns
-                         2); // Number of rows
-    button_panel_add_icon(button_panel,
-                          0, 2,
-                          decode_image(context->game_state));
+    button_panel_reserve(button_panel, 2, 3);
+    button_panel_add_icon(button_panel, 0, 2, decode_image(context->game_state));
     button_panel_add_item(button_panel,
-                          settings_button, // Index
-                          0, 0, // Location in the matrix declared above (x, y)
-                          70, 6, // Coordinates where to draw the icon (x, y)
-                          &I_settings_icon_20x20, // Icon
-                          &I_settings_icon_hover_20x20, // Icon when cursor over it
+                          settings_button,
+                          0, 0,
+                          70, 6,
+                          &I_settings_icon_20x20,
+                          &I_settings_icon_hover_20x20,
                           main_button_pressed_callback,
                           context);
     button_panel_add_item(button_panel,
-                          info_button, // Index
-                          1, 0, // Location in the matrix declared above (x, y)
-                          102, 6, // Coordinates where to draw the icon (x, y)
-                          &I_info_icon_20x20, // Icon
-                          &I_info_icon_hover_20x20, // Icon when cursor over it
+                          info_button,
+                          1, 0,
+                          102, 6,
+                          &I_info_icon_20x20,
+                          &I_info_icon_hover_20x20,
                           main_button_pressed_callback,
                           context);
     button_panel_add_item(button_panel,
-                          candy_button, // Index
-                          0, 1, // Location in the matrix declared above (x, y)
-                          70, 38, // Coordinates where to draw the icon (x, y)
-                          &I_candy_icon_20x20, // Icon
-                          &I_candy_icon_hover_20x20, // Icon when cursor over it
+                          candy_button,
+                          0, 1,
+                          70, 38,
+                          &I_candy_icon_20x20,
+                          &I_candy_icon_hover_20x20,
                           main_button_pressed_callback,
                           context);
     button_panel_add_item(button_panel,
-                          pill_button, // Index
-                          1, 1, // Location in the matrix declared above (x, y)
-                          102, 38, // Coordinates where to draw the icon (x, y)
-                          &I_pill_icon_20x20, // Icon
-                          &I_pill_icon_hover_20x20, // Icon when cursor over it
+                          pill_button,
+                          1, 1,
+                          102, 38,
+                          &I_pill_icon_20x20,
+                          &I_pill_icon_hover_20x20,
+                          main_button_pressed_callback,
+                          context);
+    button_panel_add_item(button_panel,
+                          train_button,
+                          1, 2,
+                          102, 54,
+                          &I_candy_icon_20x20,
+                          &I_candy_icon_hover_20x20,
                           main_button_pressed_callback,
                           context);
 
+    if (x > 1) x = 1;
+    if (y > 2) y = 2;
     button_panel_set_selection(button_panel, x, y);
 }
 
@@ -77,7 +82,6 @@ void scene_main_on_enter(void *ctx) {
 
     scene_main_refresh_view(context->button_module, context);
 
-    // Start the view
     view_dispatcher_switch_to_view(context->view_dispatcher, scene_main);
 }
 
@@ -86,21 +90,18 @@ bool scene_main_on_event(void *ctx, SceneManagerEvent event) {
 
     switch(event.type) {
         case SceneManagerEventTypeBack:
-            // Don't go back to loading scene, just exit
             FURI_LOG_T(LOG_TAG, "scene_main_on_event: pressed back button");
-            scene_manager_stop(context->scene_manager); // This calls the on_exit function
-            view_dispatcher_stop(context->view_dispatcher); // Stop the view dispatcher to terminate the GUI
+            scene_manager_stop(context->scene_manager);
+            view_dispatcher_stop(context->view_dispatcher);
             return true;
         case SceneManagerEventTypeTick:
             FURI_LOG_T(LOG_TAG, "scene_main_on_event: received tick");
-            // Refresh the image
             scene_main_refresh_view(context->button_module, context);
             return true;
         case SceneManagerEventTypeCustom:
             FURI_LOG_T(LOG_TAG, "scene_main_on_event: received button press %lu", event.event);
             uint32_t index = event.event;
 
-            // Handle button pressed
             if (index == settings_button) {
                 scene_manager_next_scene(context->scene_manager, scene_settings);
             } else if (index == info_button) {
@@ -111,8 +112,11 @@ bool scene_main_on_event(void *ctx, SceneManagerEvent event) {
             } else if (index == pill_button) {
                 struct ThreadsMessage threads_message = {.type = PROCESS_PILL};
                 furi_message_queue_put(context->threads_message_queue, &threads_message, FuriWaitForever);
+            } else if (index == train_button) {
+                struct ThreadsMessage threads_message = {.type = PROCESS_TRAIN};
+                furi_message_queue_put(context->threads_message_queue, &threads_message, FuriWaitForever);
             }
-            return true; // Let's tell we handled the event
+            return true;
         default:
             FURI_LOG_T(LOG_TAG, "scene_main_on_event: unhandled event");
             break;

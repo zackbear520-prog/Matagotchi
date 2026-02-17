@@ -1,8 +1,8 @@
 App(
-    appid="matagotchi",
-    name="Matagotchi",
+    appid="bytebuddy",
+    name="ByteBuddy",
     apptype=FlipperAppType.EXTERNAL,
-    entry_point="matagotchi_app",
+    entry_point="bytebuddy_app",
     requires=["gui"],
     stack_size=2 * 1024,
     fap_icon="matagotchi_10px.png",
