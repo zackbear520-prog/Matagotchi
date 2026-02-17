@@ -79,6 +79,16 @@ int32_t secondary_thread(void *ctx)
                         go_to_pill_animation(context);
                     }
                     break;
+                case PROCESS_TRAIN:
+                    FURI_LOG_T(LOG_TAG, "Received train request");
+                    give_train(context->game_state, &events);
+                    if (process_events(context->game_state, events)) {
+                        context->game_state->next_animation_index = 0;
+                        play_action(context->game_state);
+                        vibrate_short(context->game_state);
+                        go_to_train_animation(context);
+                    }
+                    break;
                 default:
                     furi_crash("Unexpected game event type");
             }

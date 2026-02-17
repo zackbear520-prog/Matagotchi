@@ -123,3 +123,8 @@ void give_pill(struct GameState *game_state, struct GameEvents *game_events) {
     uint32_t current_timestamp = get_current_timestamp();
     generate_hp(game_state, current_timestamp, game_events);
 }
+
+void give_train(struct GameState *game_state, struct GameEvents *game_events) {
+    uint32_t current_timestamp = get_current_timestamp();
+    generate_xp(game_state, current_timestamp, game_events);
+}

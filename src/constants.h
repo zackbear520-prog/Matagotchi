@@ -30,8 +30,8 @@ static const char LIFE_STAGE_STRING[][6] = {"Egg",
                                             "Dead"};
 
 /* Game state file info */
-#define GAME_STATE_STORAGE_STATE_FILENAME "matagotchi.save"
-#define GAME_STATE_STORAGE_SETTINGS_FILENAME "matagotchi.settings"
+#define GAME_STATE_STORAGE_STATE_FILENAME "bytebuddy.save"
+#define GAME_STATE_STORAGE_SETTINGS_FILENAME "bytebuddy.settings"
 #define GAME_STATE_STORAGE_STATE_PATH APP_DATA_PATH(GAME_STATE_STORAGE_STATE_FILENAME)
 #define GAME_STATE_STORAGE_SETTINGS_PATH APP_DATA_PATH(GAME_STATE_STORAGE_SETTINGS_FILENAME)
 #define GAME_STATE_HEADER_MAGIC 0xFE

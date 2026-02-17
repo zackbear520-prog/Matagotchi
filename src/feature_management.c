@@ -259,3 +259,10 @@ void generate_hp(struct GameState *game_state, uint32_t current_timestamp, struc
         game_events->hp_timestamp = current_timestamp;
     }
 }
+
+void generate_xp(struct GameState *game_state, uint32_t current_timestamp, struct GameEvents *game_events) {
+    if (game_state->persistent.stage != DEAD) {
+        game_events->xp += 1;
+        game_events->xp_timestamp = current_timestamp;
+    }
+}

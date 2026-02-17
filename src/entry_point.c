@@ -70,6 +70,9 @@ static void init_gui(struct ApplicationContext *context) {
     view_dispatcher_add_view(context->view_dispatcher,
                              scene_pill,
                              popup_get_view(context->popup_module));
+    view_dispatcher_add_view(context->view_dispatcher,
+                             scene_train,
+                             popup_get_view(context->popup_module));
 
     // Init GUI and attach the view_dispatcher to it
     context->gui = furi_record_open(RECORD_GUI);
@@ -80,6 +83,7 @@ static void init_gui(struct ApplicationContext *context) {
 
 static void free_gui(struct ApplicationContext *context) {
     /* Free the view_dispatcher */
+    view_dispatcher_remove_view(context->view_dispatcher, scene_train);
     view_dispatcher_remove_view(context->view_dispatcher, scene_pill);
     view_dispatcher_remove_view(context->view_dispatcher, scene_candy);
     view_dispatcher_remove_view(context->view_dispatcher, scene_status);
@@ -145,7 +149,7 @@ static void context_free(struct ApplicationContext *context) {
 }
 
 /* The application's entry point. Execution starts from here. */
-int32_t matagotchi_app(void* p) {
+int32_t bytebuddy_app(void* p) {
     UNUSED(p);
 
     /* Allocate all of the necessary structures */
